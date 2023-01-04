@@ -1,5 +1,6 @@
 class DateTools:
-
+    firstYear = 2021
+    days = ('Fri', 'Sat', 'Sun', 'Mon', 'Tues', 'Wed', 'Thur')
     def __init__(self):
         pass
 
@@ -13,19 +14,14 @@ class DateTools:
         return True
 
     def fdoyear(year:int) -> int:
-        years = 2023 - year
+        years = year - DateTools.firstYear
 
-        leapYears = 0
-        for year in range(2023, year):
-            if DateTools.leapYear(year):
-                leapYears += 1
+        leapYears = years // 4
 
         otherYears = years - leapYears
 
         totalDays = otherYears*365 + leapYears*366
 
-        day = totalDays % 7
+        day = totalDays%7
 
         return day
-
-    
