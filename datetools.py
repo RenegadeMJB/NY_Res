@@ -9,7 +9,20 @@ class DateTools:
 
         if year%100 == 0 and year%400 != 0:
             return False
-            
+
         return True
+
+    def fdoyear(year:int) -> int:
+        years = 2023 - year
+
+        leapYears = years % 4
+
+        otherYears = years - leapYears
+
+        totalDays = otherYears*365 + leapYears*366
+
+        day = totalDays % 7
+
+        return day
 
     
