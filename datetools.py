@@ -37,11 +37,13 @@ class DateTools:
 
         return day
 
-    def printMonth(month:int, year:int):
+    def printMonth(month:int, year:int, Row = 1, Col = 1):
         DateTools.clearscrn()
         
-        print(f'     {DateTools.monthString[month]}      ')
-        print('S M T W T F S ')
+        print(f'\33[{Row};{Col}H         {DateTools.monthString[month]}      ')
+        Row += 1
+        print(f'\33[{Row};{Col}H S  M  T  W  T  F  S ')
+        Row += 1
 
         day = DateTools.fdoyear(year)
         leapYear = DateTools.leapYear(year)
@@ -55,4 +57,13 @@ class DateTools:
         days %= 7
         firstDay = (days + day) % 7
         
-        
+        for i in range(0, 3*firstDay):
+            print(f'\33[{Row};{Col}H ')
+            Col += 1
+
+        for i in range(1, DateTools.daysInMonth[month] + 1):
+            print(f'\33[{Row};{Col}H{i:2} ')
+            Col += 3
+            if Col % 21 == 1:
+                Row += 1
+                Col = 1
