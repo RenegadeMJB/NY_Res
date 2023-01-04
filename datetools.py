@@ -40,5 +40,5 @@ class DateTools:
     def printMonth(month:int, year:int):
         DateTools.clearscrn()
         
-        print(f'  {DateTools.monthString[month]}   ')
+        print(f'  {DateTools.monthString[month]}  ')
         print('S M T W T F S')
