@@ -1,7 +1,7 @@
 class DateTools:
-    firstYear = 2021
-    days = ('Fri', 'Sat', 'Sun', 'Mon', 'Tues', 'Wed', 'Thur')
-    daysInMonth = (31, 28, 31, 30, 31, 30, 31, 31, 31, 31, 30, 31)
+    firstYear = 2017
+    days = ('Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat')
+    daysInMonth = (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
     monthString = ('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')
 
     def __init__(self):
@@ -49,7 +49,10 @@ class DateTools:
         days = 0
         for i in range(0, month):
             days += DateTools.daysInMonth[i]
+            if i == 1 and leapYear:
+                days += 1
 
         days %= 7
-        days += day
+        firstDay = (days + day) % 7
+        
         
