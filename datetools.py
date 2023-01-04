@@ -42,3 +42,14 @@ class DateTools:
         
         print(f'     {DateTools.monthString[month]}      ')
         print('S M T W T F S ')
+
+        day = DateTools.fdoyear(year)
+        leapYear = DateTools.leapYear(year)
+
+        days = 0
+        for i in range(0, month):
+            days += DateTools.daysInMonth[i]
+
+        days %= 7
+        days += day
+        
