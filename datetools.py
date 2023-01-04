@@ -3,6 +3,8 @@ class DateTools:
     days = ('Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat')
     daysInMonth = (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
     monthString = ('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')
+    columnMax = 21
+    rowMax = 8
 
     def __init__(self):
         pass
@@ -67,3 +69,9 @@ class DateTools:
             if Col % 21 == 1:
                 Row += 1
                 Col = 1
+
+    def printYear(year:int):
+        row = 1
+        column = 1
+        for month in range(0, 12):
+            DateTools.printMonth(month, year, row)
