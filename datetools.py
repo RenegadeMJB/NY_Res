@@ -15,7 +15,10 @@ class DateTools:
     def fdoyear(year:int) -> int:
         years = 2023 - year
 
-        leapYears = years % 4
+        leapYears = 0
+        for year in range(2023, year):
+            if DateTools.leapYear(year):
+                leapYears += 1
 
         otherYears = years - leapYears
 
