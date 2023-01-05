@@ -1,3 +1,5 @@
+import os
+
 class DateTools:
     firstYear = 2017
     days = ('Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat')
@@ -10,9 +12,12 @@ class DateTools:
         pass
 
     def clearscrn():
+        size = os.get_terminal_size()
+        Cols = size.columns
+        Rows = size.lines
         print('\33[0;0H')
-        for i in range(0,25):
-            for j in range (0,81):
+        for i in range(0,Rows + 1):
+            for j in range (0,Cols + 1):
                 print(f'\33[{i};{j}H ', flush=True, end='')
 
         print('\33[0;0H', flush=True, end='')
