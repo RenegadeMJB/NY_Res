@@ -56,12 +56,13 @@ def main():
     try:
         year = int(sys.argv[1])
         DT.printYear(year)
-        input("Please press Enter....")
-        DT.clearscrn()
     except ValueError:
         DT.printYear(2023)
     except IndexError:
         DT.printYear(2023)
+
+    input("Please press Enter....")
+    DT.clearscrn()
 
 if __name__ == "__main__":
     main()
