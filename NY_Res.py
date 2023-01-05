@@ -1,6 +1,7 @@
 from datetools import DateTools as DT
 from datetime import datetime
 import os
+import sys
 
 class Day:
     yellow = '\u001b[43m'
@@ -52,14 +53,12 @@ def main():
     """
     os.system(cmd)
 
+    try:
+        year = sys.argv[1]
+        DT.printYear(year)
+    except IndexError:
+        DT.printYear(2023)
+
 if __name__ == "__main__":
     main()
-    currentDay = Day(3)
-    print('how do you do?')
-    currentDay.checkOff()
-    print('Now what\'s happening?')
-    currentDay.checkOff()
-    print('Still?')
-    currentDay.checkOff()
-    print('Hold on to your butts!')
-    print(f'{Day.reset}',flush=True,end='')
+    
