@@ -76,17 +76,14 @@ class DateTools:
                     Row += 1
                     Col = columnStart
 
-    def printYear(year:int, month:int):
+    def printYear(year:int):
         DateTools.clearscrn()
         row = 1
         column = 1
-        if month == 0:
-            monthStart = 0
-            monthEnd = month + 3
-        else:
-            monthStart = month - 1
-            monthEnd = month + 2
-        for month in range(monthStart, monthEnd):
+        for month in range(0,12):
             DateTools.printMonth(month, year, row, column)
             column += 24
-            
+            if (month + 1) % 4 == 0:
+                if month != 0:
+                    column = 1
+                    row += 9
