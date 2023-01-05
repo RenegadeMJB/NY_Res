@@ -13,6 +13,8 @@ class Day:
         for i in range(0, numberResolutions):
             self._finished.append(False)
         self._color = Day.reset
+        self._dayOfYear = datetime.now().timetuple().tm_yday
+
 
     def run(self):
         pass
@@ -60,6 +62,9 @@ def main():
         DT.printYear(2023)
     except IndexError:
         DT.printYear(2023)
+    
+    day = Day(2)
+    print(day._dayOfYear)
 
     input("Please press Enter....")
     DT.clearscrn()
