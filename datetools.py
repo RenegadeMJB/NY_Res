@@ -78,12 +78,17 @@ class DateTools:
 
         return DateTools.daysInMonth[month]
 
-    def printYear(year:int):
+    def printYear(year:int, day:int):
         DateTools.clearscrn()
         row = 1
         column = 1
+        days = 0
         for month in range(0,12):
-            DateTools.printMonth(month, year, row, column)
+            '''This is messy! I have the printMonth method also returning
+            the days in the month so that I can keep track of how many days it has been.
+            This isn't going to work though! This little thing is getting wildly out
+            wing!'''
+            days += DateTools.printMonth(month, year, row, column)
             column += 24
             if (month + 1) % 4 == 0:
                 if month != 0:
