@@ -54,8 +54,12 @@ def main():
     os.system(cmd)
 
     try:
-        year = sys.argv[1]
+        year = int(sys.argv[1])
         DT.printYear(year)
+        input("Please press Enter....")
+        DT.clearscrn()
+    except ValueError:
+        DT.printYear(2023)
     except IndexError:
         DT.printYear(2023)
 
