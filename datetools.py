@@ -93,6 +93,7 @@ class DateTools:
         row = 1
         column = 1
         days = 0
+        maxCol = 0
         for month in range(0,12):
             '''This is messy! I have the printMonth method also returning
             the days in the month so that I can keep track of how many days it has been.
@@ -100,6 +101,7 @@ class DateTools:
             wing!'''
             days += DateTools.printMonth(month, year, row, column)
             column += 24
+            maxCol = column
             if (month + 1) % 4 == 0:
                 if month != 0:
                     column = 1
