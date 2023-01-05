@@ -39,9 +39,12 @@ class DateTools:
 
         return day
 
-    def printMonth(month:int, year:int, Row = 1, Col = 1):
+    def printMonth(month:int, year:int, rowStart = 1, columnStart = 1):
         DateTools.clearscrn()
         
+        Col = columnStart
+        Row = rowStart
+
         print(f'\33[{Row};{Col}H         {DateTools.monthString[month]}      ')
         Row += 1
         print(f'\33[{Row};{Col}H S  M  T  W  T  F  S ')
@@ -50,6 +53,7 @@ class DateTools:
         day = DateTools.fdoyear(year)
         leapYear = DateTools.leapYear(year)
 
+        #this is figuring out how many days up to that month not including the month
         days = 0
         for i in range(0, month):
             days += DateTools.daysInMonth[i]
@@ -63,15 +67,18 @@ class DateTools:
             print(f'\33[{Row};{Col}H ')
             Col += 1
 
-        for i in range(1, DateTools.daysInMonth[month] + 1):
-            print(f'\33[{Row};{Col}H{i:2} ')
+        for dayNumber in range(1, DateTools.daysInMonth[month] + 1):
+            print(f'\33[{Row};{Col}H{dayNumber:2} ')
             Col += 3
-            if Col % 21 == 1:
+            if (Col - columnStart) % 21 == 1:
                 Row += 1
-                Col = 1
+                Col = columnStart
 
     def printYear(year:int):
+        DateTools.clearscrn()
         row = 1
         column = 1
-        for month in range(0, 12):
-            DateTools.printMonth(month, year, row)
+        for month in range(0, 3):
+            DateTools.printMonth(month, year, row, column)
+            column += 23
+            input("Enter")
