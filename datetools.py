@@ -40,7 +40,7 @@ class DateTools:
         return day
 
     def printMonth(month:int, year:int, rowStart = 1, columnStart = 1):
-        DateTools.clearscrn()
+        #DateTools.clearscrn()
         
         Col = columnStart
         Row = rowStart
@@ -70,15 +70,23 @@ class DateTools:
         for dayNumber in range(1, DateTools.daysInMonth[month] + 1):
             print(f'\33[{Row};{Col}H{dayNumber:2} ')
             Col += 3
-            if (Col - columnStart) % 21 == 1:
-                Row += 1
-                Col = columnStart
+            colRelative = Col - columnStart
+            if colRelative % 21 == 0:
+                if colRelative != 3:
+                    Row += 1
+                    Col = columnStart
 
-    def printYear(year:int):
+    def printYear(year:int, month:int):
         DateTools.clearscrn()
         row = 1
         column = 1
-        for month in range(0, 3):
+        if month == 0:
+            monthStart = 0
+            monthEnd = month + 3
+        else:
+            monthStart = month - 1
+            monthEnd = month + 2
+        for month in range(monthStart, monthEnd):
             DateTools.printMonth(month, year, row, column)
-            column += 23
-            input("Enter")
+            column += 24
+            

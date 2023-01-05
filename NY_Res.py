@@ -1,3 +1,5 @@
 from datetools import DateTools as DT
 
-DT.printMonth(0, 2023, 10, 10)
+for month in range(0,11):
+    DT.printYear(2023, month)
+    input('enter')
