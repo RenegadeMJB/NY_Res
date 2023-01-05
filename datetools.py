@@ -1,3 +1,5 @@
+import os
+
 class DateTools:
     firstYear = 2017
     days = ('Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat')
@@ -10,9 +12,12 @@ class DateTools:
         pass
 
     def clearscrn():
+        size = os.get_terminal_size()
+        Cols = size.columns
+        Rows = size.lines
         print('\33[0;0H')
-        for i in range(0,25):
-            for j in range (0,81):
+        for i in range(0,Rows + 1):
+            for j in range (0,Cols + 1):
                 print(f'\33[{i};{j}H ', flush=True, end='')
 
         print('\33[0;0H', flush=True, end='')
@@ -83,11 +88,12 @@ class DateTools:
 
         return DateTools.daysInMonth[month]
 
-    def printYear(year:int, day:int):
+    def printYear(year:int):
         DateTools.clearscrn()
         row = 1
         column = 1
         days = 0
+        maxCol = 0
         for month in range(0,12):
             '''This is messy! I have the printMonth method also returning
             the days in the month so that I can keep track of how many days it has been.
@@ -95,6 +101,7 @@ class DateTools:
             wing!'''
             days += DateTools.printMonth(month, year, row, column)
             column += 24
+            maxCol = column
             if (month + 1) % 4 == 0:
                 if month != 0:
                     column = 1
