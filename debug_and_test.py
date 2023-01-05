@@ -12,4 +12,4 @@ cmd = """osascript -e '
     """
 os.system(cmd)
 
-DateTools.printYear(year, 1)
+DateTools.printYear(year)
