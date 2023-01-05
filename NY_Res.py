@@ -13,11 +13,7 @@ class Day:
         for i in range(0, numberResolutions):
             self._finished.append(False)
         self._color = Day.reset
-        self._dayOfYear = datetime.now().timetuple().tm_yday
-
-
-    def run(self):
-        pass
+        self._dayOfYear = datetime.now().timetuple().tm_yday 
 
     def checkOff(self):
         for index, res in enumerate(self._finished):
@@ -57,11 +53,11 @@ def main():
 
     try:
         year = int(sys.argv[1])
-        DT.printYear(year)
+        DT.printYear(year,1)
     except ValueError:
-        DT.printYear(2023)
+        DT.printYear(2023,1)
     except IndexError:
-        DT.printYear(2023)
+        DT.printYear(2023,1)
     
     day = Day(2)
     print(day._dayOfYear)
