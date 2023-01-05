@@ -76,6 +76,11 @@ class DateTools:
                     Row += 1
                     Col = columnStart
 
+        if month == 1 and leapYear:
+            leapDay = 29
+            print(f'\33[{Row};{Col}H{leapDay:2} ')
+            return (DateTools.daysInMonth[month] + 1)
+
         return DateTools.daysInMonth[month]
 
     def printYear(year:int, day:int):
