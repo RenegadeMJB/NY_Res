@@ -83,7 +83,7 @@ class DateTools:
 
         return DateTools.daysInMonth[month]
 
-    def printYear(year:int, day:int):
+    def printYear(year:int):
         DateTools.clearscrn()
         row = 1
         column = 1
