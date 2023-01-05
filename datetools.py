@@ -39,7 +39,7 @@ class DateTools:
 
         return day
 
-    def printMonth(month:int, year:int, rowStart = 1, columnStart = 1):
+    def printMonth(month:int, year:int, rowStart = 1, columnStart = 1) -> int:
         #DateTools.clearscrn()
         
         Col = columnStart
@@ -75,6 +75,8 @@ class DateTools:
                 if colRelative != 3:
                     Row += 1
                     Col = columnStart
+
+        return DateTools.daysInMonth[month]
 
     def printYear(year:int):
         DateTools.clearscrn()
