@@ -1,7 +1,7 @@
 from datetools import DateTools as DT
 from datetime import datetime
 import os
-import sys
+
 
 class Day:
     yellow = '\u001b[43m'
@@ -13,7 +13,7 @@ class Day:
         for i in range(0, numberResolutions):
             self._finished.append(False)
         self._color = Day.reset
-        self._dayOfYear = datetime.now().timetuple().tm_yday 
+        self._dayOfYear = datetime.now().timetuple().tm_yday - 1 
 
     def checkOff(self):
         for index, res in enumerate(self._finished):
@@ -22,7 +22,7 @@ class Day:
                 self.pickColor()
                 break
     
-    def pickColor(self):
+    def pickColor(self, set=False):
         started = False
         done = False
         if True in self._finished:
@@ -33,10 +33,12 @@ class Day:
 
         if done:
             self._color = Day.green
-            #print(f'{self._color}', flush=True, end='')
+            if set == True:
+                print(f'{self._color}', flush=True, end='')
         elif started:
             self._color = Day.yellow
-            #print(f'{self._color}',flush=True,end='')
+            if set == True:
+                print(f'{self._color}',flush=True,end='')
 
 
 class Year:
@@ -44,9 +46,25 @@ class Year:
         self._year = year
         self._days = []
         self._numberResolutions = numberResolutions
-        for day in days:
-            self._day.append(day)
+        if DT.leapYear:
+            totalDays = 366
+        else:
+            totalDays = 365
+        if days == []:
+            for day in range(0, totalDays + 1):
+                newDay = Day(numberResolutions)
+                self._days.append(newDay)
+        else:
+            for day in days:
+                self._days.append(day)
+
         
+    def run(self):
+        currDay = Day(self._numberResolutions)
+        self._days[currDay._dayOfYear]
+        self._days[currDay._dayOfYear].checkOff()
+        self.printYear()
+
     def addDay(self):
         day = Day(self._numberResolutions)
         self._days.append(day)
@@ -55,13 +73,8 @@ class Year:
         DT.clearscrn()
         row = 1
         column = 1
-        days = 0
         for month in range(0,12):
-            '''This is messy! I have the printMonth method also returning
-            the days in the month so that I can keep track of how many days it has been.
-            This isn't going to work though! This little thing is getting wildly out
-            wing!'''
-            days += DT.printMonth(month, self._year, row, column)
+            self.printMonth(month, row, column)
             column += 24
             if (month + 1) % 4 == 0:
                 if month != 0:
@@ -79,7 +92,7 @@ class Year:
         print(f'\33[{Row};{Col}H S  M  T  W  T  F  S ')
         Row += 1
 
-        day = DT.fdoyear(self._year)
+        firstDayYear = DT.fdoyear(self._year)
         leapYear = DT.leapYear(self._year)
 
         #this is figuring out how many days up to that month not including the month
@@ -89,14 +102,17 @@ class Year:
             if i == 1 and leapYear:
                 days += 1
 
-        firstDay = (days%7 + day) % 7
+        FirstDayMonth = (days%7 + firstDayYear) % 7
         
-        for i in range(0, 3*firstDay):
+        for i in range(0, 3*FirstDayMonth):
             print(f'\33[{Row};{Col}H ')
             Col += 1
 
         for dayNumber in range(1, DT.daysInMonth[month] + 1):
-            print(f'\33[{Row};{Col}H{dayNumber:2} ')
+            curDay = self._days[days]
+            days += 1
+            curDay.pickColor(set=True)
+            print(f'\33[{Row};{Col}H{dayNumber:2} {Day.reset}')
             Col += 3
             colRelative = Col - columnStart
             if colRelative % 21 == 0:
@@ -111,7 +127,7 @@ class Year:
 
 
 
-            
+
 
 def main():
     cmd = """osascript -e '
@@ -122,16 +138,8 @@ def main():
     """
     os.system(cmd)
 
-    try:
-        year = int(sys.argv[1])
-        DT.printYear(year,1)
-    except ValueError:
-        DT.printYear(2023,1)
-    except IndexError:
-        DT.printYear(2023,1)
-    
-    day = Day(2)
-    print(day._dayOfYear)
+    year = Year(2023, 2)
+    year.run()
 
     input("Please press Enter....")
     DT.clearscrn()
