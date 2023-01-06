@@ -10,12 +10,23 @@ class Day:
     green = '\u001b[42m'
     reset = '\u001b[0m'
 
-    def __init__(self, numberResolutions):
-        self._finished = []
-        for i in range(0, numberResolutions):
-            self._finished.append(False)
-        self._color = Day.reset
-        self._dayOfYear = datetime.now().timetuple().tm_yday - 1 
+    def __init__(self, numberResolutions, finished = [], color = 'reset', dayOfYear = 0):
+        if finished == []:
+            self._finished = []
+            for i in range(0, numberResolutions):
+                self._finished.append(False)
+        else:
+            self._finished = []
+            for task in finished:
+                self._finished.append(task)
+        if color == 'reset':
+            self._color = Day.reset
+        else:
+            self._color = color
+        if dayOfYear == 0:
+            self._dayOfYear = datetime.now().timetuple().tm_yday - 1 
+        else:
+            self._dayOfYear = dayOfYear
 
     def checkOff(self):
         for index, res in enumerate(self._finished):
@@ -60,8 +71,11 @@ class Year:
             for day in days:
                 self._days.append(day)
 
+        self._file = '/Users/teacher/pyprogs/files/ny_res.txt'
+
         
     def run(self):
+        self.load()
         currDay = Day(self._numberResolutions)
         self._days[currDay._dayOfYear]
         self._days[currDay._dayOfYear].checkOff()
@@ -69,10 +83,6 @@ class Year:
         self.save()
         input("File successfully saved, Please press Enter....")
         DT.clearscrn()
-
-    def addDay(self):
-        day = Day(self._numberResolutions)
-        self._days.append(day)
 
     def printYear(self):
         DT.clearscrn()
@@ -131,9 +141,23 @@ class Year:
             return (DT.daysInMonth[month] + 1)
 
     def save(self):
-        with open('/Users/teacher/pyprogs/files/ny_res.txt', 'w') as f:
+        with open(self._file, 'w') as f:
             yearJSON = YearEncoder().encode(self)
             f.write(yearJSON)
+
+    def load(self):
+        with open(self._file) as f:
+            yearString = f.readline()
+
+        days = []
+        year = json.loads(yearString)
+        for day in year['_days']:
+            currentDay = Day(self._numberResolutions, day['_finished'], day['_color'], int(day['_dayOfYear']))
+            days.append(currentDay)
+
+        for index, day in enumerate(days):
+            self._days[index] = day
+
 
 class YearEncoder(JSONEncoder):
     def default(self, year: object):
