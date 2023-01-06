@@ -1,6 +1,8 @@
 from datetools import DateTools as DT
 from datetime import datetime
 import os
+import json
+from json import JSONEncoder
 
 
 class Day:
@@ -64,6 +66,9 @@ class Year:
         self._days[currDay._dayOfYear]
         self._days[currDay._dayOfYear].checkOff()
         self.printYear()
+        self.save()
+        input("File successfully saved, Please press Enter....")
+        DT.clearscrn()
 
     def addDay(self):
         day = Day(self._numberResolutions)
@@ -125,9 +130,14 @@ class Year:
             print(f'\33[{Row};{Col}H{leapDay:2} ')
             return (DT.daysInMonth[month] + 1)
 
+    def save(self):
+        with open('/Users/teacher/pyprogs/files/ny_res.txt', 'w') as f:
+            yearJSON = YearEncoder().encode(self)
+            f.write(yearJSON)
 
-
-
+class YearEncoder(JSONEncoder):
+    def default(self, year: object):
+        return year.__dict__
 
 def main():
     cmd = """osascript -e '
@@ -140,9 +150,6 @@ def main():
 
     year = Year(2023, 2)
     year.run()
-
-    input("Please press Enter....")
-    DT.clearscrn()
 
 if __name__ == "__main__":
     main()
