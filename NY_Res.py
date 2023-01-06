@@ -46,12 +46,11 @@ class Day:
 
         if done:
             self._color = Day.green
-            if set == True:
-                print(f'{self._color}', flush=True, end='')
         elif started:
             self._color = Day.yellow
-            if set == True:
-                print(f'{self._color}',flush=True,end='')
+        
+        if set == True:
+            print(f'{self._color}',flush=True,end='')
 
 
 class Year:
