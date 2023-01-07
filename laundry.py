@@ -45,20 +45,17 @@ class Day:
                 break
     
     def pickColor(self, set=False):
-        started = False
-        done = False
-        if True in self._finished:
-            started = True
+        counter = 0
+        for task in self._finished:
+            if task:
+                counter += 1
 
-        if started == True and False not in self._finished:
-            done = True
-
-        if done:
-            self._color = Day.green
-        elif started:
+        if counter == 1:
             self._color = Day.yellow
-        else:
-            self._color = Day.reset
+        elif counter == 2:
+            self._color = Day.cyan
+        elif counter == 3:
+            self._color = Day.green
         
         if set == True:
             print(f'{self._color}',flush=True,end='')
