@@ -7,15 +7,14 @@ from json import JSONEncoder
 
 
 class Day:
-    cyan = '\u001b[46m'
     yellow = '\u001b[43m'
     green = '\u001b[42m'
     reset = '\u001b[0m'
 
-    def __init__(self, finished = [], color = 'reset', dayOfYear = 0):
+    def __init__(self, numberResolutions, finished = [], color = 'reset', dayOfYear = 0):
         if finished == []:
             self._finished = []
-            for i in range(0, 3):
+            for i in range(0, numberResolutions):
                 self._finished.append(False)
         else:
             self._finished = []
@@ -65,18 +64,18 @@ class Day:
 
 
 class Year:
-    def __init__(self, year, days = []):
+    def __init__(self, year, numberResolutions, days = []):
         self._year = year
         self._curMonth = datetime.now().timetuple().tm_mon - 1
         self._days = []
-        self._numberResolutions = 3
+        self._numberResolutions = numberResolutions
         if DT.leapYear:
             totalDays = 366
         else:
             totalDays = 365
         if days == []:
             for day in range(0, totalDays + 1):
-                newDay = Day()
+                newDay = Day(numberResolutions)
                 self._days.append(newDay)
         else:
             for day in days:
@@ -94,7 +93,7 @@ class Year:
         """
         os.system(cmd)
         self.load()
-        currDay = Day()
+        currDay = Day(self._numberResolutions)
         while True:
             DT.clearscrn()
             choice = input('What would you like to do? ')
@@ -194,7 +193,7 @@ class Year:
         days = []
         year = json.loads(yearString)
         for day in year['_days']:
-            currentDay = Day(day['_finished'], day['_color'], int(day['_dayOfYear']))
+            currentDay = Day(self._numberResolutions, day['_finished'], day['_color'], int(day['_dayOfYear']))
             days.append(currentDay)
 
         for index, day in enumerate(days):
@@ -210,7 +209,7 @@ class YearEncoder(JSONEncoder):
 
 def main():
 
-    year = Year(2023)
+    year = Year(2023, 3)
     year.run()
 
 if __name__ == "__main__":
