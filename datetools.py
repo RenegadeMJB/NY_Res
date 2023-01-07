@@ -89,6 +89,13 @@ class DateTools:
         return DateTools.daysInMonth[month]
 
     def printYear(year:int):
+        cmd = """osascript -e '
+        tell application "Terminal"
+            set bounds of front window to {700, 50, 1412, 510}
+        end tell
+        '
+        """
+        os.system(cmd)
         DateTools.clearscrn()
         row = 1
         column = 1
