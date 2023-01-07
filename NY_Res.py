@@ -1,6 +1,7 @@
 from datetools import DateTools as DT
 from datetime import datetime
 import os
+import sys
 import json
 from json import JSONEncoder
 
@@ -80,7 +81,7 @@ class Year:
             for day in days:
                 self._days.append(day)
 
-        self._file = '/Users/teacher/pyprogs/files/ny_res.txt'
+        self._file = str(sys.argv[1])
 
         
     def run(self):
@@ -175,13 +176,19 @@ class Year:
             return (DT.daysInMonth[month] + 1)
 
     def save(self):
-        with open(self._file, 'w') as f:
-            yearJSON = YearEncoder().encode(self)
-            f.write(yearJSON)
+        try:
+            with open(self._file, 'w') as f:
+                yearJSON = YearEncoder().encode(self)
+                f.write(yearJSON)
+        except FileNotFoundError:
+            print('No such file')
 
     def load(self):
-        with open(self._file) as f:
-            yearString = f.readline()
+        try:
+            with open(self._file) as f:
+                yearString = f.readline()
+        except FileNotFoundError:
+            print('No such file')
 
         days = []
         year = json.loads(yearString)
@@ -192,6 +199,9 @@ class Year:
         for index, day in enumerate(days):
             self._days[index] = day
 
+    def buildFile(self):
+        self.save()
+
 
 class YearEncoder(JSONEncoder):
     def default(self, year: object):
@@ -199,7 +209,7 @@ class YearEncoder(JSONEncoder):
 
 def main():
 
-    year = Year(2023, 2)
+    year = Year(2023, 3)
     year.run()
 
 if __name__ == "__main__":
