@@ -34,6 +34,13 @@ class Day:
                 self._finished[index] = True
                 self.pickColor()
                 break
+
+    def unCheck(self):
+        for index, res in enumerate(self._finished):
+            if res == True:
+                self._finished[index] = False
+                self.pickColor()
+                break
     
     def pickColor(self, set=False):
         started = False
@@ -48,6 +55,8 @@ class Day:
             self._color = Day.green
         elif started:
             self._color = Day.yellow
+        else:
+            self._color = Day.reset
         
         if set == True:
             print(f'{self._color}',flush=True,end='')
@@ -56,6 +65,7 @@ class Day:
 class Year:
     def __init__(self, year, numberResolutions, days = []):
         self._year = year
+        self._curMonth = datetime.now().timetuple().tm_mon - 1
         self._days = []
         self._numberResolutions = numberResolutions
         if DT.leapYear:
@@ -74,11 +84,34 @@ class Year:
 
         
     def run(self):
+        cmd = """osascript -e '
+        tell application "Terminal"
+            set bounds of front window to {700, 50, 1412, 510}
+        end tell
+        '
+        """
+        os.system(cmd)
         self.load()
         currDay = Day(self._numberResolutions)
-        self._days[currDay._dayOfYear]
-        self._days[currDay._dayOfYear].checkOff()
-        self.printYear()
+        while True:
+            DT.clearscrn()
+            choice = input('What would you like to do? ')
+            if choice == 'h':
+                pass
+            if choice == 'c':
+                self._days[currDay._dayOfYear].checkOff()
+                self.printYear()
+            if choice == 'r':
+                self._days[currDay._dayOfYear].unCheck()
+                self.printYear()
+            if choice == 'd':
+                self.printYear()
+            if choice == 'm':
+                DT.clearscrn()
+                self.printMonth(self._curMonth)
+                input("Please Press Enter....")
+            if choice == 'x':
+                break
         self.save()
         input("File successfully saved, Please press Enter....")
         DT.clearscrn()
@@ -94,6 +127,8 @@ class Year:
                 if month != 0:
                     column = 1
                     row += 9
+
+        input('Please Press Enter....')
 
     def printMonth(self, month:int, rowStart = 1, columnStart = 1):
         #DT.clearscrn()
@@ -163,13 +198,6 @@ class YearEncoder(JSONEncoder):
         return year.__dict__
 
 def main():
-    cmd = """osascript -e '
-    tell application "Terminal"
-        set bounds of front window to {700, 50, 1412, 510}
-    end tell
-    '
-    """
-    os.system(cmd)
 
     year = Year(2023, 2)
     year.run()
