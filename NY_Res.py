@@ -107,6 +107,8 @@ class Year:
                 self.printYear()
             if choice == 'd':
                 self.printYear()
+            if choice == 'e':
+                self.edit()
             if choice == 'm':
                 DT.clearscrn()
                 self.printMonth(self._curMonth)
@@ -131,7 +133,7 @@ class Year:
 
         input('Please Press Enter....')
 
-    def printMonth(self, month:int, rowStart = 1, columnStart = 1):
+    def printMonth(self, month:int, rowStart = 1, columnStart = 1, edit=False, editDay=0):
         #DT.clearscrn()
         
         Col = columnStart
@@ -146,22 +148,22 @@ class Year:
         leapYear = DT.leapYear(self._year)
 
         #this is figuring out how many days up to that month not including the month
-        days = 0
-        for i in range(0, month):
-            days += DT.daysInMonth[i]
-            if i == 1 and leapYear:
-                days += 1
+        days = self.daysToMonth(month)
 
         FirstDayMonth = (days%7 + firstDayYear) % 7
         
+        #spaces up to the first day of the month
         for i in range(0, 3*FirstDayMonth):
             print(f'\33[{Row};{Col}H ')
             Col += 1
 
+        #prints the days
         for dayNumber in range(1, DT.daysInMonth[month] + 1):
             curDay = self._days[days]
             days += 1
             curDay.pickColor(set=True)
+            if edit == True and editDay == dayNumber:
+                print(f'\u001b[7m', flush=True, end='')
             print(f'\33[{Row};{Col}H{dayNumber:2} {Day.reset}')
             Col += 3
             colRelative = Col - columnStart
@@ -170,10 +172,21 @@ class Year:
                     Row += 1
                     Col = columnStart
 
+        #adds a day if it is a leap year
         if month == 1 and leapYear:
             leapDay = 29
             print(f'\33[{Row};{Col}H{leapDay:2} ')
             return (DT.daysInMonth[month] + 1)
+
+    def daysToMonth(self, month):
+        leapYear = DT.leapYear(self._year)
+        days = 0
+        for i in range(0, month):
+            days += DT.daysInMonth[i]
+            if i == 1 and leapYear:
+                days += 1
+
+        return days
 
     def save(self):
         try:
@@ -202,6 +215,24 @@ class Year:
     def buildFile(self):
         self.save()
 
+    def edit(self):
+        DT.clearscrn()
+        month = input('What month (number) ')
+        try:
+            month = int(month)
+
+        except TypeError:
+            print('Incorrect type')
+            return
+        editDay = 1
+        while editDay <= DT.daysInMonth[month]:
+            self.printMonth(month,edit=True,editDay=editDay)
+            choice = input('What would you like to do? ')
+            if choice == 'r':
+                pass
+            elif choice == 'a':
+                pass
+            editDay += 1        
 
 class YearEncoder(JSONEncoder):
     def default(self, year: object):
