@@ -217,22 +217,28 @@ class Year:
 
     def edit(self):
         DT.clearscrn()
-        month = input('What month (number) ')
+        month = input('What month (number 1-12) ')
         try:
-            month = int(month)
-
-        except TypeError:
-            print('Incorrect type')
+            month = int(month) - 1
+            days = self.daysToMonth(month)
+        except ValueError:
+            input('Incorrect type, Press Enter....')
             return
-        editDay = 1
-        while editDay <= DT.daysInMonth[month]:
-            self.printMonth(month,edit=True,editDay=editDay)
+        displayDay = 1
+        editDay = days
+        while displayDay <= DT.daysInMonth[month]:
+            DT.clearscrn()
+            self.printMonth(month,edit=True,editDay=displayDay)
             choice = input('What would you like to do? ')
             if choice == 'r':
-                pass
+                self._days[editDay].unCheck()
             elif choice == 'a':
-                pass
-            editDay += 1        
+                self._days[editDay].checkOff()
+            elif choice == 'x':
+                return
+            else:
+                displayDay += 1 
+                editDay += 1       
 
 class YearEncoder(JSONEncoder):
     def default(self, year: object):
