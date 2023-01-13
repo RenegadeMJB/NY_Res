@@ -227,7 +227,8 @@ class Year:
         displayDay = 1
         editDay = days
         while displayDay <= DT.daysInMonth[month]:
-            DT.clearscrn()
+            print('\u001b[2J', flush=True, end='')
+            print('\33[0;0H')
             self.printMonth(month,edit=True,editDay=displayDay)
             choice = input('What would you like to do? ')
             if choice == 'r':
